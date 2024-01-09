@@ -8,5 +8,9 @@ myString="Hello World"
 print(myString[::2])
 print(numset[::-1])
 
+name="Hello World"
+name.fo
+def is_polindrome(word):
+    return word==word[::-1]
 
-
+print(is_polindrome("madam"))

@@ -1,6 +1,7 @@
 #Learning Lists
 #Stores Different data types
 mylist=[1,2,3,"Hello","World","Python"]
+mylist
 print(type(mylist))
 print(len(mylist))
 print(mylist[3])
@@ -49,7 +50,7 @@ L1.reverse()
 print(L1)
 print(L4)
 
-
+#Sorting a list(It Sorts the list items)
 print(lst.sort())
 
 #Looping through more than one list
