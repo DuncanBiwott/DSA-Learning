@@ -64,7 +64,6 @@ head={
         }
     }
 }
-print(head["next"]["next"]["next"]["value"])
 
 class Node:
     def __init__(self,value):
@@ -83,7 +82,7 @@ class LinkedList:
             temp=temp.next
     def append(self,value):
         newNode=Node(value)
-        if self.head is None:
+        if self.length ==0:
             self.head=newNode
             self.tail=newNode
         else:
@@ -91,7 +90,29 @@ class LinkedList:
             self.tail=newNode
         self.length+=1
         return self
-myNode=LinkedList(10)
-myNode.print_list()
-myNode.append(12)
 
+    def get(self, index):
+        if index < 0 or index >= self.length:
+            return None
+        temp = self.head
+        for _ in range(index):
+            temp = temp.next
+        return temp
+
+
+myNode=LinkedList(10)
+myNode.append(5)
+myNode.append(16)
+myNode.append(20)
+myNode.get(0)
+
+#Trying the given Pseudo Code
+
+class NewNode:
+    def __init__(self,data):
+        self.data=data
+        self.next=None
+    def prepend(self,value):
+        newNode=NewNode(value)
+        newNode.next=self.head
+        self.head=newNode
