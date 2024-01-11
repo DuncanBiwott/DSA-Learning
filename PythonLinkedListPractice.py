@@ -91,17 +91,6 @@ class LinkedList:
         self.length+=1
         return self
 
-    def prepend(self,value):
-        newNode=Node(value)
-        if self.length==0:
-            self.head=newNode
-            self.tail=newNode
-        else:
-            newNode.next=self.head
-            self.head=newNode
-        self.length+=1
-        return self
-
     def get(self, index):
         if index < 0 or index >= self.length:
             return None
@@ -109,20 +98,6 @@ class LinkedList:
         for _ in range(index):
             temp = temp.next
         return temp
-
-    def insert(self, index, value):
-        if index < 0 or index > self.length:
-            return False
-        if index == 0:
-            return self.prepend(value)
-        if index == self.length:
-            return self.append(value)
-        new_node = Node(value)
-        temp = self.get(index - 1)
-        new_node.next = temp.next
-        temp.next = new_node
-        self.length += 1
-        return True
 
 
 myNode=LinkedList(10)
