@@ -63,3 +63,6 @@ print(s)
 # Hexadecimal notation
 s="\x41"
 print (s)
+def myfunct(b: int, a: int) -> int:
+     return int(a+b)
+print(myfunct(10,20))
