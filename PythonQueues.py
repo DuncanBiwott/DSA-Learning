@@ -48,3 +48,15 @@ print(myQueue.print_queue())
 print(myQueue.dequeue())
 
 
+#An Array Test
+
+def find_sum(arr,target):
+    sum_list=[]
+    for i in range(len(arr)):
+        for j in range(i+1,len(arr)):
+            if arr[i]+arr[j]==target:
+                sum_list.append([i,j])
+    return sum_list
+
+print(find_sum([1,2,3,4,5,6,7,8,9],10))
+

@@ -27,6 +27,8 @@ class Stack:
             self.top = self.top.next
             value_pop.next = None
             self.height -= 1
+        if self.height == 0:
+            self.top = None
         return value_pop.value
 stack= Stack(5)
 stack.push(10)
