@@ -109,6 +109,17 @@ class LinkedList:
         for _ in range(index):
             temp = temp.next
         return temp
+    def reverse(self):
+        if self.length==0:
+            return None
+        prev=self.head
+        self.tail=self.head
+        curr=self.head.next
+        while curr:
+            temp=curr.next
+            curr.next=prev
+            prev=curr
+            curr=temp
 
     def insert(self, index, value):
         if index < 0 or index > self.length:
@@ -130,6 +141,8 @@ myNode.append(5)
 myNode.append(16)
 myNode.append(20)
 myNode.get(0)
+myNode.print_list()
+myNode.reverse()
 
 #Trying the given Pseudo Code
 
@@ -141,3 +154,5 @@ class NewNode:
         newNode=NewNode(value)
         newNode.next=self.head
         self.head=newNode
+#Reverse a Linked List
+
