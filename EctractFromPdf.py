@@ -1,66 +1,71 @@
-# import fitz
-# def extract_text_from_pdf(pdf_path):
-#     doc = fitz.open(pdf_path)
-#     page1 = doc[0]
-#     words = page1.get_text("words")
-#     print(words)
-#
-# extract_text_from_pdf("/home/dbiwott/Downloads/tabithaaccountstatementrafiki-2.pdf")
-
-
-from PyPDF2 import PdfReader
+import csv
+from PyPDF2 import PdfReader, PdfWriter
 import re
-
 import pandas as pd
+def extract_text_from_pdf(pdf_path):
+    pdf_file = open(pdf_path, "rb")
+    pdf_reader = PdfReader(pdf_file)
+    num_pages = len(pdf_reader.pages)
+    count = 0
+    text = ""
+    while count < num_pages:
+        pageObj = pdf_reader.pages[count]
+        count += 1
+        text += pageObj.extract_text()
+    if text != "":
+        text = text
+    else:
+        text = "No text found"
+    return text
 
-# Open the PDF file
-pdf_file = open("/home/dbiwott/Downloads/tabithaaccountstatementrafiki-2.pdf", "rb")
+def create_csv_from_text(pdf_path, csv_path, columns):
+    text = extract_text_from_pdf(pdf_path)
+    transactions = get_transactions(text)
+    sub_list = list()
+    for my_transactions in transactions:
+        split = my_transactions.split()
+        "".join(split[1:7])
+        sub_list.append(split)
 
-# Create a reader instance
-pdf_reader = PdfReader(pdf_file)
-num_pages = len(pdf_reader.pages)
-count = 0
-text = ""
+    with open(csv_path, 'w', newline='', encoding='utf-8') as csvfile:
+        csv_writer = csv.writer(csvfile)
 
-# The while loop will read each page
-while count < num_pages:
-    pageObj = pdf_reader.pages[count]
-    count += 1
-    text += pageObj.extract_text()
-    # text+="+++++++"
+        csv_writer.writerow(columns)
+        csv_writer.writerows(sub_list)
+    return print("CSV file created successfully")
 
-# This if statement exists to check if the above library returned words. It's done because PyPDF2 cannot read scanned files.
-if text != "":
-    text = text
-
-else:
-    print("Cannot process Scanned PDF")
-#To write a regular expression to extract the data from the text
-
-# print(text.split("\n"))
-lines = text.split("\n")
-header = list()
-for line in lines:
-
-    if str(line).__contains__("Opening Balance"):
-        continue
-    print(line)
+def get_transactions(text):
+    pattern = re.compile(r"\d{2}-[0-9]{2}-\d{4}")
+    transactions = list()
+    lines = text.split('\n')
+    for line in lines:
+        if pattern.match(line):
+            if line in transactions:
+                continue
+            else:
+                transactions.append(line)
+        else:
+            continue
+    return transactions
 
 
-metadata = {
-    "Client_Name": "",
-    "Opening_Balance": "",
-    "Statement_Period": "",
+def rotate_pdf(pdf_path, rotated_pdf_path):
+    pdf_file = open(pdf_path, "rb")
+    pdf_reader = PdfReader(pdf_file)
+    pdf_writer = PdfWriter()
+    for page in pdf_reader.pages:
+        pdf_writer.add_page(page.rotate(90))
+    with open(rotated_pdf_path, "wb") as fh:
+        pdf_writer.write(fh)
+    return rotated_pdf_path
 
-}
 
-count = 0
+columns = ["Date", "Value Date", "Description", "Nurrative", "Cheque Number", "Balance", "Debit", "Credit",
+           "Running Balance"]
+pdf_path = "/home/dbiwott/Downloads/nipon.pdf"
+csv_path = "/home/dbiwott/Downloads/Energy.csv"
+create_csv_from_text("/home/dbiwott/Downloads/tabithaaccountstatementrafiki-2.pdf",
+                     "/home/dbiwott/Downloads/Tabitha2.csv", ["Date", "Description", "Debit", "Credit", "Balance"])
 
-# while count < len(lines):
-#     print(lines[0])
-#     print(lines[1])
-#     print(lines[2])
-#     print(lines[3])
-#     print("**********************************************************************************************")
-#     count += 1
-
+rotated_path = rotate_pdf(pdf_path, "/home/dbiwott/Downloads/rotated.pdf")
+create_csv_from_text(rotated_path, csv_path, columns)
