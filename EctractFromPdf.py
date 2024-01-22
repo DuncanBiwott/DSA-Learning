@@ -20,27 +20,38 @@ def extract_text_from_pdf(pdf_path):
 
 def create_csv_from_text(pdf_path, csv_path, columns):
     check_float_pattern = re.compile(r"(\d+\.\d+)")
+
     text = extract_text_from_pdf(pdf_path)
     transactions = get_transactions(text)
+
 
     # Initialize sub_list directly as a list of lists
     sub_list = []
 
     for transaction in transactions:
-        splited_list = transaction.split()
-        date = splited_list[0]
-        mid_list = splited_list[1:-2]
-        last_list = splited_list[-2:]
+        replaced_string = transaction.replace(',', '')
+        splitted_list = replaced_string.split()
+        # reg_split= re.split(check_float_pattern, transaction,maxsplit=2)
+        date = splitted_list[0]
+        mid_list = splitted_list[1:-3]
+        last_list = splitted_list[-3:]
+        for i in range(len(last_list)):
+            if_string=last_list[i]
+            if check_float_pattern.match(last_list[i]):
+                last_list[i] = float(last_list[i])
+            else:
+                mid_list.append(last_list[i])
+                last_list[i] = 0.0
 
         # Create a new joined_list for each iteration
         joined_list = [date, " ".join(mid_list)]
         joined_list.extend(last_list)
-
         # Append the joined_list to sub_list directly
         sub_list.append(joined_list)
 
-        print(sub_list)
+    # df = pd.DataFrame(sub_list, columns=columns)
 
+    # print(df)
     with open(csv_path, 'w', newline='', encoding='utf-8') as csvfile:
         csv_writer = csv.writer(csvfile)
         csv_writer.writerow(columns)
@@ -80,7 +91,16 @@ columns = ["Date", "Value Date", "Description", "Nurrative", "Cheque Number", "B
 pdf_path = "/home/dbiwott/Downloads/nipon.pdf"
 csv_path = "/home/dbiwott/Downloads/Energy.csv"
 create_csv_from_text("/home/dbiwott/Downloads/tabithaaccountstatementrafiki-2.pdf",
-                     "/home/dbiwott/Downloads/Modified9.csv", ["Date", "Description", "Debit", "Credit", "Balance"])
+                     "/home/dbiwott/Downloads/Modified9.csv", ["Date", "Description", "Debit", "Credit","Balance"])
 
 # rotated_path = rotate_pdf(pdf_path, "/home/dbiwott/Downloads/rotated.pdf")
 # create_csv_from_text(rotated_path, csv_path, columns)
+
+# my_string='01-Dec-2022 QL1619VA2S From ::A/C 0082020000687 [TABITHA NYAWI  5,714.03  518.00'
+# print(my_string)
+# replaced_string=my_string.replace(',','')
+# print(replaced_string)
+# split_dec=re.split(r'(\d+\.\d+)',replaced_string)
+# print(split_dec)
+
+
