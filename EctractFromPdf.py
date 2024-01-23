@@ -93,7 +93,7 @@ csv_path = "/home/dbiwott/Downloads/Energy.csv"
 create_csv_from_text("/home/dbiwott/Downloads/tabithaaccountstatementrafiki-2.pdf",
                      "/home/dbiwott/Downloads/Modified9.csv", ["Date", "Description", "Debit", "Credit","Balance"])
 
-# rotated_path = rotate_pdf(pdf_path, "/home/dbiwott/Downloads/rotated.pdf")
+rotated_path = rotate_pdf(pdf_path, "/home/dbiwott/Downloads/rotated.pdf")
 # create_csv_from_text(rotated_path, csv_path, columns)
 
 # my_string='01-Dec-2022 QL1619VA2S From ::A/C 0082020000687 [TABITHA NYAWI  5,714.03  518.00'
