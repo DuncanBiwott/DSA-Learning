@@ -53,6 +53,25 @@ class Node:
             print(self.data, "->", end=" ")
         if self.right:
             self.right.inorder()
+    def deleteNode(self, key):
+        if self is None:
+            return None
+        if key < self.data:
+            self.left = self.left.deleteNode(key)
+        elif key > self.data:
+            self.right = self.right.deleteNode(key)
+        else:
+            if self.left is None and self.right is None:
+                return None
+            elif self.right:
+                self.data = self.succesor()
+                self.right = self.right.deleteNode(self.data)
+            else:
+                self.data = self.predecessor()
+                self.left = self.left.deleteNode(self.data)
+        return self
+
+
 
 
 root = Node(54)
